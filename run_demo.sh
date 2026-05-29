@@ -62,6 +62,7 @@ echo_info "所有模块导入成功。"
 # -------------------- 4. 虚拟赛题全流程演示 --------------------
 echo_step "4. 运行虚拟赛题全流程演示..."
 DEMO_DIR="results/demo_$(date +%Y%m%d_%H%M%S)"
+export DEMO_DIR
 mkdir -p "$DEMO_DIR"
 
 $PYTHON << 'PYEOF'
@@ -190,6 +191,27 @@ print("  综合评价：正常 [PASS]")
 print("  预测建模：正常 [PASS]")
 print("  图表输出：正常 [PASS]")
 PYEOF
+
+# -------------------- 5. 检查输出文件 --------------------
+echo_step "5. 检查 Demo 输出文件..."
+
+REQUIRED_FILES=(
+    "$DEMO_DIR/mock_aqi_timeseries.csv"
+    "$DEMO_DIR/mock_city_air_quality.csv"
+    "$DEMO_DIR/problem1_bar.png"
+    "$DEMO_DIR/problem1_ranking.csv"
+    "$DEMO_DIR/problem2_forecast.png"
+)
+
+for file in "${REQUIRED_FILES[@]}"; do
+    if [ ! -s "$file" ]; then
+        echo_fail "输出文件缺失或为空: $file"
+        exit 1
+    fi
+    echo "        [OK] $file"
+done
+
+echo_info "Demo 输出文件检查通过。"
 
 echo ""
 echo_info "工具链完整性验证通过！"
