@@ -1,0 +1,337 @@
+% ============================================================================
+%  数学建模竞赛论文 LaTeX 模板
+%  依据：江西财经大学 2026 年数学建模竞赛论文格式规范（校赛优先）
+%  编译：xelatex paper
+% ============================================================================
+
+\documentclass[12pt,a4paper]{ctexart}
+
+% -------------------- 页面设置 --------------------
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{setspace}
+\setstretch{1.25}          % 1.25 倍行距
+
+% -------------------- 字体设置 --------------------
+\setCJKmainfont{Songti SC}[AutoFakeBold=2.5]     % 正文：小4号宋体
+\setCJKsansfont{SimHei}                            % 标题：黑体
+\setmainfont{Times New Roman}                      % 英文/数字：Times New Roman
+
+% -------------------- 常用宏包 --------------------
+\usepackage{graphicx}          % 图片
+\usepackage{amsmath,amssymb}   % 数学公式
+\usepackage{booktabs}          % 三线表
+\usepackage{longtable}         % 长表格
+\usepackage{hyperref}          % 超链接
+  \hypersetup{colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue}
+\usepackage{caption}           % 图表标题
+\usepackage{subcaption}        % 子图
+\usepackage{enumitem}          % 列表控制
+\usepackage{fancyhdr}          % 页眉页脚
+\usepackage{float}             % 浮动体控制
+\usepackage{cite}              % 参考文献引用
+\usepackage{listings}          % 代码列表
+\usepackage{xcolor}
+
+% -------------------- 页眉页脚 --------------------
+\pagestyle{fancy}
+\fancyhf{}                     % 清空页眉页脚
+\fancyfoot[C]{\thepage}        % 页码居中
+\renewcommand{\headrulewidth}{0pt}  % 无页眉线
+\renewcommand{\footrulewidth}{0pt}
+
+% -------------------- 标题格式 --------------------
+% 论文题目：3号黑体居中
+\ctexset{
+    section = {
+        format = {\zihao{4}\heiti\centering},   % 一级标题：4号黑体居中
+        beforeskip = {1.5ex},
+        afterskip = {1.0ex plus 0.2ex},
+    },
+    subsection = {
+        format = {\zihao{-4}\heiti},              % 二级标题：小4号黑体
+        beforeskip = {1.0ex},
+        afterskip = {0.5ex plus 0.2ex},
+    },
+    subsubsection = {
+        format = {\zihao{-4}\heiti},              % 三级标题：小4号黑体
+        beforeskip = {0.5ex},
+        afterskip = {0.5ex plus 0.2ex},
+    },
+}
+
+% -------------------- 图表编号 --------------------
+% 按章节编号：图 1-1, 表 2-3 等
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+\numberwithin{equation}{section}
+\renewcommand{\thefigure}{\arabic{section}-\arabic{figure}}
+\renewcommand{\thetable}{\arabic{section}-\arabic{table}}
+\renewcommand{\theequation}{\arabic{section}-\arabic{equation}}
+
+% -------------------- 代码高亮 --------------------
+\lstset{
+    basicstyle = {\zihao{-5}\ttfamily},     % 小五号等宽字体
+    numbers = left,
+    numberstyle = {\tiny\color{gray}},
+    frame = single,
+    breaklines = true,
+    tabsize = 4,
+    showstringspaces = false,
+}
+
+% -------------------- 文件信息（不显示在正文中） ---
+\title{}
+\author{}
+\date{}
+
+% ============================================================================
+%  论文正文
+% ============================================================================
+
+\begin{document}
+
+% ==================== 封面页（第 1 页） ====================
+%   校赛要求：封面含论文题目、队员姓名、编号
+%   电子版提交时可删除此页
+% ===========================================================
+\thispagestyle{empty}
+\begin{center}
+
+    \vspace*{3cm}
+
+    {\zihao{2}\heiti 2026 江西财经大学数学建模竞赛}
+
+    \vspace{2cm}
+
+    {\zihao{3}\heiti % <论文题目>
+
+    \vspace{3cm}
+
+    {\zihao{4}\songti
+        参赛队员: % <队员1姓名>、<队员2姓名>、<队员3姓名> \\
+        参赛队编号：% <参赛队编号>
+    }
+
+    \vspace{2cm}
+
+    {\zihao{4}\songti 2026 年 5 月 22 日 \textasciitilde{} 5 月 27 日}
+
+\end{center}
+\newpage
+
+% ==================== 承诺书（第 2 页） ====================
+%  校赛要求：承诺书为论文第 2 页
+%  电子版提交时可删除此页
+% ===========================================================
+\thispagestyle{empty}
+\begin{center}
+    {\zihao{3}\heiti 2026 江西财经大学数学建模竞赛}
+
+    \vspace{1.5cm}
+
+    {\zihao{4}\heiti 承 \quad 诺 \quad 书}
+\end{center}
+
+\vspace{1cm}
+
+{\zihao{-4}\songti
+我们仔细阅读了江西财经大学数学建模竞赛的竞赛章程。
+
+我们完全明白，在竞赛开始后参赛队员不能以任何方式（包括电话、电子邮件、网上咨询等）与队外的任何人研究、讨论与赛题有关的问题。
+
+我们知道，抄袭别人的成果是违反竞赛规则的，如果引用别人的成果或其他公开的资料（包括网上查到的资料），必须按照规定的参考文献的表述方式在正文引用处和参考文献中明确列出。
+
+我们郑重承诺，严格遵守竞赛规则，以保证竞赛的公正、公平性。如有违反竞赛规则的行为，我们将受到严肃处理。
+
+\vspace{1cm}
+
+我们参赛选择的题号是（从 A/B/C 中选择一项填写）：\underline{\hspace{3cm}} \\
+\vspace{0.5cm}
+我们的参赛队编号为 \underline{\hspace{5cm}} \\
+
+\vspace{1cm}
+
+{\heiti 参赛队员（可以打印）：} \\
+\vspace{0.3cm}
+队员 1. \underline{\hspace{2cm}} \quad 专业班级 \underline{\hspace{3cm}} \\
+\vspace{0.3cm}
+队员 2. \underline{\hspace{2cm}} \quad 专业班级 \underline{\hspace{3cm}} \\
+\vspace{0.3cm}
+队员 3. \underline{\hspace{2cm}} \quad 专业班级 \underline{\hspace{3cm}} \\
+
+\vspace{1.5cm}
+
+日期：2026 年 5 月 27 日
+}
+\newpage
+
+% ==================== 摘要页（第 3 页） ====================
+%  页码从此页开始，编号 "1"
+%  含论文题目、摘要、关键词，≤ 1 页
+% ===========================================================
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+\begin{center}
+    {\zihao{3}\heiti % <论文题目>
+}
+\end{center}
+
+\vspace{0.5cm}
+
+\section*{摘\quad 要}
+\addcontentsline{toc}{section}{摘要}
+
+% <摘要正文：简明扼要地阐述问题背景、所用模型、主要方法、关键结果和结论。控制在 300-500 字。>
+
+\vspace{1cm}
+
+\noindent {\heiti 关键词：}% <关键词1；关键词2；关键词3；关键词4>
+
+\newpage
+
+% ==================== 正文（第 4 页起） ====================
+%  不超过 30 页
+
+% ---------- 1. 问题重述 ----------
+\section{问题重述}
+% <用参赛者自己的语言重新描述赛题，不要照抄原文。>
+% <说明问题的实际背景、需要解决的核心问题、已知条件和目标。>
+
+% ---------- 2. 模型假设 ----------
+\section{模型假设}
+% <列出建模的基本假设，每条假设单独编号，说明假设的合理性。>
+% <示例：>
+% \begin{enumerate}[label=\arabic*.]
+%     \item 假设系统处于稳态，忽略瞬时效应。
+%     \item 假设所有数据真实可靠，不存在测量误差。
+%     \item ...
+% \end{enumerate}
+
+% ---------- 3. 符号说明 ----------
+\section{符号说明}
+% <用表格列出主要符号及其含义。>
+% <示例：>
+% \begin{table}[H]
+% \centering
+% \caption{符号说明表}
+% \begin{tabular}{ccl}
+% \toprule
+% 符号 & 单位 & 含义 \\
+% \midrule
+% $x_i$    & --   & 第 $i$ 个决策变量 \\
+% $f(x)$   & --   & 目标函数 \\
+% $\alpha$ & --   & 权重系数 \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+
+% ---------- 4. 模型建立与求解 ----------
+\section{模型建立与求解}
+
+% --- 子问题一 ---
+\subsection{% <问题一小标题>}
+% <问题分析：简述本小问的核心难点和建模思路。>
+% <模型建立：写出数学表达式，所有公式用 LaTeX。>
+% <示例公式：>
+% \begin{equation}
+%     \min \quad Z = \sum_{i=1}^{n} c_i x_i
+%     \label{eq:obj}
+% \end{equation}
+% <算法设计与求解：说明所用算法及参数。>
+% <结果展示：用表格和图表展示结果。>
+% <示例表格：>
+% \begin{table}[H]
+% \centering
+% \caption{% <表标题>}
+% \label{tab:result1}
+% \begin{tabular}{cccc}
+% \toprule
+% 方案 & 指标 A & 指标 B & 综合得分 \\
+% \midrule
+% 1 & 0.85 & 0.92 & 0.88 \\
+% 2 & 0.76 & 0.88 & 0.82 \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+% <示例图片：>
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.75\textwidth]{figures/result_chart.png}
+%     \caption{% <图标题>}
+%     \label{fig:result}
+% \end{figure}
+% <结果分析：解释结果的物理意义，验证是否合理。>
+
+% --- 子问题二 ---
+\subsection{% <问题二小标题>}
+% <参照子问题一结构>
+
+% --- 子问题三 ---
+\subsection{% <问题三小标题>}
+% <参照子问题一结构>
+
+% --- 子问题四 ---
+\subsection{% <问题四小标题>}
+% <若赛题不足四个子问题，删除本节>
+
+% ---------- 5. 模型评价与推广 ----------
+\section{模型评价与推广}
+
+\subsection{模型优点}
+% <列出模型的创新点、优势：>
+% \begin{enumerate}[label=\arabic*.]
+%     \item ...
+%     \item ...
+% \end{enumerate}
+
+\subsection{模型缺点}
+% <列出模型的局限性：>
+% \begin{enumerate}[label=\arabic*.]
+%     \item ...
+%     \item ...
+% \end{enumerate}
+
+\subsection{模型推广}
+% <说明模型的改进方向和应用拓展场景。>
+
+% ---------- 参考文献 ----------
+\section{参考文献}
+% 参考文献按正文引用次序排列，格式如下：
+% 书籍：[编号] 作者，书名，出版地：出版社，出版年
+% 期刊：[编号] 作者，论文名，杂志名，卷期号：起止页码，出版年
+% 网络：[编号] 作者，资源标题，网址，访问时间（年月日）
+
+% <示例：>
+% \begin{thebibliography}{99}
+% \bibitem{ref1} 姜启源，数学模型（第五版），北京：高等教育出版社，2018.
+% \bibitem{ref2} 司守奎，数学建模算法与应用（第3版），北京：国防工业出版社，2021.
+% \bibitem{ref3} 作者，论文名，杂志名，2020，35(2)：100-115.
+% \bibitem{ref4} 作者，资源标题，https://example.com，访问时间（2026年5月25日）.
+% \end{thebibliography}
+
+% ---------- 附录 ----------
+\section{附录}
+
+\subsection{支撑材料文件列表}
+% <列出所有提交的支撑材料文件及其说明。>
+
+\subsection{源程序代码}
+% <列出建模所用到的全部完整、可运行的源程序代码。>
+% <使用 listings 环境：>
+% \begin{lstlisting}[language=Python, caption={% <程序名称>}, label={lst:code1}]
+% # Python 源代码
+% import numpy as np
+% ...
+% \end{lstlisting}
+
+% ---------- AI 工具使用说明（如有） ----------
+% <若使用了 AI 工具，务必添加此附录>
+% \section{AI 工具使用说明}
+% \begin{itemize}
+%     \item 使用的 AI 工具名称：
+%     \item 使用的问题与场景：
+%     \item 采用的信息与处理方式：
+% \end{itemize}
+
+\end{document}

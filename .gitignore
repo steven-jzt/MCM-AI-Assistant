@@ -1,0 +1,38 @@
+# 数据、生成结果、解题代码（每道题的赛题数据与产出不入库）
+data/*
+figures/*
+results/*
+code/*
+
+# 保留目录结构（空目录不会被 git 跟踪，用 .gitkeep 占位）
+!data/.gitkeep
+!figures/.gitkeep
+!results/.gitkeep
+!code/.gitkeep
+
+# LaTeX 编译临时文件
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.xdv
+
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# 系统杂项
+.DS_Store
+Thumbs.db
+
+# 版权文件（范文原文、官方规范 PDF/DOC/TXT 不入库，请自行获取）
+examples/*.pdf
+examples/*.doc
+references/*.pdf
+references/*.doc
