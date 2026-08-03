@@ -4,6 +4,57 @@
 
 ---
 
+## [v1.1.0] — 2026-08-03
+
+### 新增 — 流程工程化升级
+- **强制约束协议**（CLAUDE.md）：8 条强制性规则（阶段顺序、文件保护、质量门、Subagent策略、模型数量限制、官方规则优先、可复现性、渐进加载）
+- **三角色工作流**：建模手 → 编程手 → 论文手，每角色独立 SKILL.md + 工作流程 + 常见模式 + 质检清单
+- **5 质量门机制**（M1/P1/P2/W1/W2）：`references/Subagent调度.md` 定义固定门协议、派发格式、回执格式、反馈回路
+- **渐进加载协议**（CLAUDE.md）：每阶段"必读 vs 按需加载"文档表
+- **check_env.py**：按 feature 动态验证 Python 依赖（支持 12 种特征）
+- **figure_audit.py**：图表审计脚本（DPI、JPEG 禁用、SVG/PNG 配对、分类统计）
+- **repro_manifest.py**：复现清单生成器（seed、SHA-256、依赖版本快照、复现命令）
+- **plot_style.py**：出版级绘图样式独立脚本（色盲调色板、SCI 风格参数）
+
+### 新增 — 可视化升级
+- `utils/visual.py` v1.1.0：色盲友好调色板（Wang/Tol/IBM 四套）、PNG+SVG 双格式导出、出版级样式（`apply_publication_style()`）、灰阶预览、新增 `line_with_ci()` 和 `dual_axis_chart()`
+- `prompts/roles/编程手/references/可视化规范.md`：三类图体系、出版级样式基准、图表合同（14字段）、导出自检循环
+- `prompts/roles/编程手/references/图表选择与避坑.md`：图表选择四问、数学建模场景速查表、15 条避坑清单
+
+### 新增 — 算法资产库
+- `assets/README.md`：算法索引（7类60+种）、十类核心算法、问题类型/数据类型速查表
+- `assets/04-图论与网络分析算法说明.md`：最短路径、最小生成树、网络流、关键路径、欧拉/哈密顿、匹配
+- `assets/06-综合类算法说明.md`：蒙特卡洛、排队论、博弈论、元胞自动机、马尔可夫链、微分方程
+- `assets/07-机器学习算法说明.md`：随机森林、AdaBoost、Isolation Forest + 竞赛使用原则
+
+### 改进
+- CLAUDE.md 版本号升级至 v1.1.0
+- 工作流程从 5 步扩展为 15 步（含 5 个质量门）
+- 模型速查表增加图论/综合/机器学习三类
+- 输出规范升级为出版级可视化标准（PNG+SVG、色盲调色板、出版级样式）
+
+---
+
+## [v1.2.0] — 2026-08-03
+
+### 新增 — 论文管线与文献工具
+- **`tools/latex/`** — LaTeX 论文工程管理工具
+  - `latex_paper.py`：doctor（工具链检查）/ init（初始化工程）/ build（编译）/ validate（校验页数/公式/图表）
+- **`tools/docx/`** — Word 论文格式化工具
+  - `paper_format.py`：new_document / setup_page / title / heading1/2 / body / three_line_table（三线表）/ equation / validate_paper_structure
+  - `equations.py`：LaTeX→Unicode 数学公式转换器（支持希腊字母、上下标、分数、根号），DOCX 占位符批量替换
+- **`tools/paper_search/`** — 双引擎文献检索工具
+  - `hybrid_scholar.py`：OpenAlex + Crossref 并行检索，DOI 精确匹配 + 标题模糊去重，相关性过滤，APA 格式引用输出
+- **`prompts/roles/论文手/references/英文化工作流.md`** — MCM/ICM 英文写作全流程
+  - 英文摘要标准模板（Context→Gap→Approach→Result→Boundary→Implication）
+  - 20 条中式英文修正表
+  - 动词力度层级（强/中/弱）
+  - 学术短语库（引出问题/方法/结果/对比/局限/结论）
+  - 段落检查清单 + MCM/ICM 格式差异表
+  - 常用中英数学术语对照
+
+---
+
 ## [v1.0.0] — 2026-05-29
 
 ### 新增
