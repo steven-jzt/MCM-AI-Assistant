@@ -18,16 +18,18 @@ description: 数学建模第二阶段——实现模型、跑数据、画图、�
 
 ## 执行顺序
 1. **环境检查**：`python check_env.py --features <所需功能>`
-2. **P1 质量门**：最小可运行结果（mini-batch 或前 100 行数据），验证输入输出链路。
+2. **P1 质量门**：最小可运行结果（mini-batch 或前 100 行数据），验证输入输出链路。须包含数据筛选的领域理由说明。
 3. **实现模型** → 运行 → 校验结果合理性。
-4. **可视化**（P1 之后执行数据剖析）：
+4. **结果可靠性评估**：根据题目类型选择合适方式——测量类做不确定度合成，预测类做误差分析与交叉验证，优化类做灵敏度分析。
+5. **可视化**（P1 之后执行数据剖析）：
    - 每图先写"一图一句结论"（figure contract）
+   - raw_ 图须标注被筛选剔除的数据区域及理由
    - 调用 `utils/visual.py` 或直接使用 matplotlib，应用出版级样式
    - 保存 PNG（≥300 DPI）+ SVG 双格式
    - 运行 `python references/roles/编程手/scripts/figure_audit.py figures/`
-5. **生成复现清单**：`python references/roles/编程手/scripts/repro_manifest.py`
-6. **P2 质量门**：派发只读 Subagent 核验代码、图、表、复现清单。
-7. 按 P2 回执返工。
+6. **生成复现清单**：`python references/roles/编程手/scripts/repro_manifest.py`
+7. **P2 质量门**：派发只读 Subagent 核验代码、图、表、复现清单。
+8. 按 P2 回执返工。
 
 ## 代码规范
 - 文件位于 `code/`，入口为 `code/main.py`
