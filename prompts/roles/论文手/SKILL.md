@@ -32,8 +32,10 @@ description: 数学建模第三阶段——把结果写成符合官方格式的�
    - 模型评价与推广
    - 参考文献
    - 附录（含完整代码）
-6. **格式校验**：对照规范逐项检查
-7. **W2 质量门**：派发只读 Subagent 核验全文一致性
+6. **格式校验**：
+   - 先运行 `python references/roles/论文手/scripts/paper_audit.py template/paper.tex --figures-dir figures/ --results-dir results/ --compile --project-root .` 秒级拦截硬错误
+   - 再对照 `references/论文规范摘要.md` 逐项人工检查
+7. **W2 质量门**：paper_audit 通过后，派发只读 Subagent 核验全文一致性（公式/术语/文献/逻辑自洽）
 8. 按 W2 回执返工，直至 PASS。
 9. **确认 AI 使用台账**：检查 `references/AI使用台账模板.md` 三阶段均已填写，汇入论文的 AI 使用声明。
 
@@ -42,7 +44,7 @@ description: 数学建模第三阶段——把结果写成符合官方格式的�
 在以下节点暂停，切换旁观视角自检：
 
 1. **Claim-Evidence 映射后**：每个结论都有可追溯的证据来源吗？有无无依据的断言？
-2. **交付前**：公式/图表/文献/格式一致吗？AI 使用台账完整吗？
+2. **交付前**：paper_audit 通过了吗？公式/图表/文献/格式一致吗？AI 使用台账完整吗？
 
 ## 写作原则
 - 每个结论必须有可追溯证据
@@ -58,5 +60,6 @@ description: 数学建模第三阶段——把结果写成符合官方格式的�
 | 写正文前 | `references/roles/论文手/references/章节模板.md` |
 | 写作中 | `references/roles/论文手/references/写作规范.md` |
 | 格式检查 | `references/论文规范摘要.md` + `references/roles/论文手/references/论文格式规范.md` |
+| 自动审计 | `python references/roles/论文手/scripts/paper_audit.py --help` |
 | 用 LaTeX | `references/roles/论文手/references/LaTeX格式规范.md` |
 | 自检 | `references/roles/论文手/references/质检清单.md` |
