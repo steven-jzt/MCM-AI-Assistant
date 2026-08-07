@@ -1,9 +1,10 @@
-# CUMCM-AI-Assistant v1.2.0
+# CUMCM-AI-Assistant v1.4.0
 
 数学建模竞赛 AI 全流程智能体 — 从审题到论文，一条龙辅助。
 
-> 面向 Claude Code 的数学建模 Skill，内置金牌教练角色、三角色流水线、5 个质量门、
-> 可运行模型库（~3700 行 Python）、出版级可视化、LaTeX/Word 双管线论文生成与文献检索工具。
+> 面向 Claude Code 的数学建模 Skill，内置三角色流水线（建模手→编程手→论文手）、教练核验点、
+> 5 质量门（含 W2 自动审计）、数据预处理检查清单、AI 使用台账、稳健性分析、
+> 方法选择决策树、可运行模型库（~3700 行 Python）、出版级可视化、LaTeX/Word 双管线。
 
 ## 快速开始
 
@@ -65,13 +66,19 @@ claude
 ├── references/                   ← 参考资料
 │   ├── 论文规范摘要.md            ← 校赛+国赛格式规范
 │   ├── Subagent调度.md           ← ★ 质量门协议（派发/回执/反馈回路）
-│   └── roles/编程手/scripts/     ← ★ 辅助脚本
-│       ├── figure_audit.py       ← 图表审计（DPI/JPEG禁用/SVG配对）
-│       ├── plot_style.py         ← 出版级样式独立脚本
-│       └── repro_manifest.py     ← 复现清单生成（seed/SHA-256/依赖快照）
+│   ├── 数据预处理检查清单.md      ← ★ 五大类通用检查项（v1.3.0）
+│   ├── AI使用台账模板.md          ← ★ 三阶段 AI 使用记录（v1.3.1）
+│   └── roles/
+│       ├── 编程手/scripts/        ← ★ 辅助脚本
+│       │   ├── figure_audit.py   ← 图表审计（DPI/JPEG禁用/SVG配对）
+│       │   ├── plot_style.py     ← 出版级样式独立脚本
+│       │   └── repro_manifest.py ← 复现清单生成（seed/SHA-256/依赖快照）
+│       └── 论文手/scripts/        ← ★ W2 自动审计（v1.4.0）
+│           └── paper_audit.py    ← 论文自动审计（图表引用/章节结构/数值交叉/编译/提交清单）
 │
-├── assets/                       ← ★ 算法资产库（v1.1.0 新增）
+├── assets/                       ← ★ 算法资产库（v1.1.0+）
 │   ├── README.md                 ← 7类60+种算法索引 + 速查表
+│   ├── 方法选择决策树.md          ← ★ 三层方法选择体系：Domain→Subdomain→Method（v1.4.0）
 │   ├── 04-图论与网络分析算法说明.md
 │   ├── 06-综合类算法说明.md      ← 蒙特卡洛/排队论/博弈论/元胞自动机/马尔可夫
 │   └── 07-机器学习算法说明.md    ← 随机森林/AdaBoost/Isolation Forest + 使用原则
@@ -113,6 +120,7 @@ claude
 |------|------|------|
 | 环境检查 | `python check_env.py --features data,optimization` | 按需验证依赖 |
 | 图表审计 | `python references/roles/编程手/scripts/figure_audit.py figures/` | 检查 DPI/格式/数量 |
+| 论文审计 | `python references/roles/论文手/scripts/paper_audit.py template/paper.tex --compile` | 图表引用/章节/数值交叉/编译 |
 | 复现清单 | `python references/roles/编程手/scripts/repro_manifest.py --seed 42 --inputs data/` | 生成 SHA-256 快照 |
 | LaTeX 管线 | `python tools/latex/scripts/latex_paper.py doctor` | 检查/初始化/编译/校验 |
 | Word 管线 | `python tools/docx/scripts/paper_format.py validate --docx paper.docx` | 格式化+校验 |
@@ -171,5 +179,9 @@ claude
 | v1.0.0 | 2026-05-29 | 初始发布：模型库 + 论文模板 + 10 阶段提示词 + demo |
 | v1.1.0 | 2026-08-03 | 三角色流水线 + 5 质量门 + 出版级可视化 + 算法资产库 + 复现机制 |
 | v1.2.0 | 2026-08-03 | LaTeX/Word 论文管线 + 双引擎文献检索 + 英文写作工作流 |
+| v1.3.0 | 2026-08-05 | 数据预处理检查清单 + 建模规范软化（去铁律化）+ 数据探索必做步骤 |
+| v1.3.1 | 2026-08-05 | AI 使用台账（三阶段记录）+ 稳健性分析（敏感性扫描融入 P2） |
+| v1.3.2 | 2026-08-05 | 教练角色重设计：从"金牌教练指导"转为轻量"教练核验点"自检 |
+| v1.4.0 | 2026-08-07 | W2 自动审计层（paper_audit）+ 方法选择决策树（三层体系+双向索引） |
 
 详见 [CHANGELOG.md](CHANGELOG.md)。
