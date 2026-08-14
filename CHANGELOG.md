@@ -4,6 +4,24 @@
 
 ---
 
+## [v1.6.0] — 2026-08-14
+
+### 新增 — 原生化适配当前 Claude Code
+
+- **根 `SKILL.md`**：项目入口从 `CLAUDE.md`（项目记忆）迁移为 Claude Code 原生 Skill（`name: mcm-ai-assistant` + 描述 frontmatter），编排逻辑重组为 10 条强制约束 + 三角色路由 + 渐进加载 + 质量门 + 竞争/回退机制 + 模型速查。
+- **原生质量门 Subagent**：新增 `.claude/agents/{m1,p1,p2,w1,w2}-gate.md`，把 M1/P1/P2/W1/W2 五个质量门固化为只读 Subagent 定义，主 Agent 可按名（`subagent_type`）派发。
+- **SKILL_ROOT / PROJECT_ROOT 契约**：明确只读技能资产（`model_library/`、`utils/`、`tools/`、`references/`、`assets/`、`template/`）与赛题工作目录（`code/`、`data/`、`figures/`、`results/`）分离，支持安装为技能后在任意项目复用。
+- **`VERSION` 文件**：新增版本号 `1.6.0`。
+
+### 改进 — 目录重构
+
+- 角色文档 `prompts/roles/` 迁入 `references/roles/`，与既有 `references/roles/*/scripts/` 统一，修复角色 SKILL.md 中的相对路径断链。
+- 旧版扁平提示词（`prompts/*.md`）移入 `prompts/legacy/` 标记废弃。
+- `CLAUDE.md` 降级为薄指针（指向 `SKILL.md` + 安装说明），保留给把仓库当工作项目使用的用户。
+- `README.md` 增加「安装为技能」方式，说明与第三方 `math-modeling` 技能并存。
+
+---
+
 ## [v1.5.0] — 2026-08-09
 
 ### 新增 — 竞争机制与回退机制
@@ -41,8 +59,8 @@
 
 ### 新增 — 可视化升级
 - `utils/visual.py` v1.1.0：色盲友好调色板（Wang/Tol/IBM 四套）、PNG+SVG 双格式导出、出版级样式（`apply_publication_style()`）、灰阶预览、新增 `line_with_ci()` 和 `dual_axis_chart()`
-- `prompts/roles/编程手/references/可视化规范.md`：三类图体系、出版级样式基准、图表合同（14字段）、导出自检循环
-- `prompts/roles/编程手/references/图表选择与避坑.md`：图表选择四问、数学建模场景速查表、15 条避坑清单
+- `references/roles/编程手/references/可视化规范.md`：三类图体系、出版级样式基准、图表合同（14字段）、导出自检循环
+- `references/roles/编程手/references/图表选择与避坑.md`：图表选择四问、数学建模场景速查表、15 条避坑清单
 
 ### 新增 — 算法资产库
 - `assets/README.md`：算法索引（7类60+种）、十类核心算法、问题类型/数据类型速查表
@@ -131,7 +149,7 @@
   - `equations.py`：LaTeX→Unicode 数学公式转换器（支持希腊字母、上下标、分数、根号），DOCX 占位符批量替换
 - **`tools/paper_search/`** — 双引擎文献检索工具
   - `hybrid_scholar.py`：OpenAlex + Crossref 并行检索，DOI 精确匹配 + 标题模糊去重，相关性过滤，APA 格式引用输出
-- **`prompts/roles/论文手/references/英文化工作流.md`** — MCM/ICM 英文写作全流程
+- **`references/roles/论文手/references/英文化工作流.md`** — MCM/ICM 英文写作全流程
   - 英文摘要标准模板（Context→Gap→Approach→Result→Boundary→Implication）
   - 20 条中式英文修正表
   - 动词力度层级（强/中/弱）

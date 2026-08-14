@@ -11,6 +11,13 @@ import json
 import sys
 from typing import Dict, List, Tuple
 
+# Windows 中文控制台默认 GBK，无法编码 ✓/✗ 等 Unicode 符号，统一转 UTF-8 输出避免崩溃
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8")
+    except (AttributeError, ValueError):
+        pass
+
 FEATURES: Dict[str, List[Tuple[str, str]]] = {
     "data": [
         ("pandas", "pandas"),

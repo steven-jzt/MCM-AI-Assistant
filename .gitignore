@@ -37,3 +37,8 @@ examples/*.doc
 references/*.pdf
 references/*.doc
 template/paper.pdf
+
+# Claude Code 本地状态（提交 .claude/agents/，不提交本地缓存）
+.claude/settings.local.json
+.claude/plans/
+.claude/sessions/

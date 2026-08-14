@@ -1,25 +1,37 @@
-# CUMCM-AI-Assistant v1.5.0
+# MCM-AI-Assistant v1.6.0
 
 数学建模竞赛 AI 全流程智能体 — 从审题到论文，一条龙辅助。
 
-> 面向 Claude Code 的数学建模 Skill，内置三角色流水线（建模手→编程手→论文手）、教练核验点、
-> 5 质量门（含 W2 自动审计）、数据预处理检查清单、AI 使用台账、稳健性分析、
-> 方法选择决策树、可运行模型库（~3700 行 Python）、出版级可视化、LaTeX/Word 双管线。
+> 面向 Claude Code 的**原生 Skill**（`SKILL.md` 入口），内置三角色流水线（建模手→编程手→论文手）、教练核验点、
+> 5 质量门原生 Subagent（M1/P1/P2/W1/W2）、数据预处理检查清单、AI 使用台账、稳健性分析、
+> 候选模型竞争机制、两级回退机制、方法选择决策树、可运行模型库（~3700 行 Python）、出版级可视化、LaTeX/Word 双管线。
 
 ## 快速开始
+
+### 方式一：安装为技能（推荐）
 
 ```bash
 # 1. 安装依赖
 pip install -r requirements.txt
 
-# 2. 验证环境
-python check_env.py --features data,visualization,optimization,statistics
+# 2. 复制到用户技能目录（与第三方 math-modeling 技能并存）
+cp -r . ~/.claude/skills/mcm-ai-assistant
 
-# 3. 启动 Claude Code
+# 3.（可选）注册质量门 Subagent，便于按名原生派发
+mkdir -p ~/.claude/agents && cp .claude/agents/*.md ~/.claude/agents/
+
+# 4. 在任意赛题项目目录启动 Claude Code，说："用 mcm-ai-assistant 处理这道赛题"
 claude
+```
 
-# 4. 对 AI 说："开始按 CLAUDE.md 流程处理这道赛题"
-# AI 将自动按照 建模手→编程手→论文手 的流水线推进，每阶段派发质量门核验
+### 方式二：作为工作项目直接使用
+
+```bash
+git clone https://github.com/steven-jzt/MCM-AI-Assistant.git
+cd MCM-AI-Assistant
+pip install -r requirements.txt
+python check_env.py --features data,visualization,optimization,statistics
+claude  # 对 AI 说："开始按 SKILL.md 流程处理这道赛题"
 ```
 
 ## 核心流程
@@ -32,17 +44,20 @@ claude
 | 2 | 编程手 | 可运行代码、结果表格、≥9 张出版级图表、复现清单 | P1→P2 — 可复现性核验 |
 | 3 | 论文手 | 完整论文（Word/LaTeX+PDF） | W1→W2 — 证据链+全文一致性 |
 
-**5 质量门协议**：每阶段结束派发独立只读 Subagent 核验，返回 PASS/FAIL/BLOCKED 证据回执。详见 `references/Subagent调度.md`。
+**5 质量门协议**：每阶段结束派发独立只读 Subagent 核验，返回 PASS/FAIL/BLOCKED 证据回执。原生定义见 `.claude/agents/`，协议细节见 `references/Subagent调度.md`。
 
 ## 项目结构
 
 ```
-├── CLAUDE.md                     ← 系统指令（8条强制约束 + 三角色路由 + 渐进加载）
+├── SKILL.md                      ← ★ 技能入口（10条强制约束 + 三角色路由 + 渐进加载 + 质量门 + 竞争/回退机制 + 模型速查）
+├── CLAUDE.md                     ← 薄指针（指向 SKILL.md + 安装说明）
 ├── README.md                     ← 本文件
-├── CHANGELOG.md                  ← 完整版本记录（v1.0.0 → v1.2.0）
+├── VERSION                       ← 版本号（1.6.0）
+├── CHANGELOG.md                  ← 完整版本记录
 ├── requirements.txt              ← Python 依赖
 ├── check_env.py                  ← 环境检查（按 feature 动态验证）
 ├── run_demo.sh / run_demo.bat    ← 工具链一键验证脚本
+├── .claude/agents/               ← ★ 5 个原生质量门 Subagent（m1/p1/p2/w1/w2-gate）
 │
 ├── model_library/                ← ★ 可运行模型代码库（~3700 行）
 │   ├── evaluation.py             ← 熵权法 / TOPSIS / 模糊综合评价 / AHP
@@ -55,26 +70,19 @@ claude
 │   ├── data_loader.py            ← 多格式数据读取（CSV/Excel/MATLAB/JSON/TXT）
 │   └── visual.py v1.1.0          ← 出版级图表（色盲调色板、PNG+SVG 双格式）
 │
-├── prompts/                      ← 流程控制
-│   ├── _README.md                ← 旧版阶段提示词（保留兼容）
-│   └── roles/                    ← ★ 三角色工作流（v1.1.0 新增）
-│       ├── 建模手/               ← SKILL.md + 工作流程 + 常见模式 + 质检清单
-│       ├── 编程手/               ← SKILL.md + 可视化规范 + 图表选择与避坑
-│       │   └── references/       ←   常见模式 + 质检清单
-│       └── 论文手/               ← SKILL.md + 章节模板 + 写作规范 + 英文化工作流
+├── prompts/legacy/               ← 旧版扁平提示词（v1.0.0，已废弃保留兼容）
 │
 ├── references/                   ← 参考资料
 │   ├── 论文规范摘要.md            ← 校赛+国赛格式规范
 │   ├── Subagent调度.md           ← ★ 质量门协议（派发/回执/反馈回路）
 │   ├── 数据预处理检查清单.md      ← ★ 五大类通用检查项（v1.3.0）
 │   ├── AI使用台账模板.md          ← ★ 三阶段 AI 使用记录（v1.3.1）
-│   └── roles/
-│       ├── 编程手/scripts/        ← ★ 辅助脚本
-│       │   ├── figure_audit.py   ← 图表审计（DPI/JPEG禁用/SVG配对）
-│       │   ├── plot_style.py     ← 出版级样式独立脚本
-│       │   └── repro_manifest.py ← 复现清单生成（seed/SHA-256/依赖快照）
-│       └── 论文手/scripts/        ← ★ W2 自动审计（v1.4.0）
-│           └── paper_audit.py    ← 论文自动审计（图表引用/章节结构/数值交叉/编译/提交清单）
+│   └── roles/                    ← ★ 三角色工作流（SKILL.md + references/ + scripts/）
+│       ├── 建模手/               ← SKILL.md + 工作流程 + 常见模式 + 质检清单
+│       ├── 编程手/               ← SKILL.md + 可视化规范 + 图表选择与避坑 + scripts/
+│       │   └── scripts/          ← figure_audit / plot_style / repro_manifest
+│       └── 论文手/               ← SKILL.md + 章节模板 + 写作规范 + 英文化工作流 + scripts/
+│           └── scripts/          ← paper_audit（W2 自动审计）
 │
 ├── assets/                       ← ★ 算法资产库（v1.1.0+）
 │   ├── README.md                 ← 7类60+种算法索引 + 速查表
@@ -133,7 +141,7 @@ claude
 - 出版级样式（白底、无网格、无上/右脊线、7.5pt 字体）
 - PNG（≥300 DPI）+ SVG 双格式导出，灰阶预览自检
 - 三类图体系：`raw_`（原始数据）/ `process_`（处理过程）/ `result_`（最终结果），每类 ≥3 张
-- 详见 `prompts/roles/编程手/references/可视化规范.md`
+- 详见 `references/roles/编程手/references/可视化规范.md`
 
 ## 论文格式要点
 
@@ -143,7 +151,7 @@ claude
 - **页边距**：上下左右 2.5 cm；**无页眉**
 - **摘要**：≤ 1 页，含关键词
 - **正文**：≤ 30 页（不含附录）；附录含完整可运行源代码
-- **英文论文（MCM/ICM）**：参考 `prompts/roles/论文手/references/英文化工作流.md`
+- **英文论文（MCM/ICM）**：参考 `references/roles/论文手/references/英文化工作流.md`
 - 详细规范见 `references/论文规范摘要.md`
 
 ## 防过拟合规则
@@ -184,5 +192,6 @@ claude
 | v1.3.2 | 2026-08-05 | 教练角色重设计：从"金牌教练指导"转为轻量"教练核验点"自检 |
 | v1.4.0 | 2026-08-07 | W2 自动审计层（paper_audit）+ 方法选择决策树（三层体系+双向索引） |
 | v1.5.0 | 2026-08-09 | 竞争机制（候选池→P1淘汰）+ 回退机制（两级）+ 模板冲突规则（约束#7） |
+| v1.6.0 | 2026-08-14 | 原生化适配当前 Claude Code：CLAUDE.md→SKILL.md 技能入口 + 5 原生质量门 Subagent + SKILL_ROOT/PROJECT_ROOT 契约 + 目录重构 |
 
 详见 [CHANGELOG.md](CHANGELOG.md)。

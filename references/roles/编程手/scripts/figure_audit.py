@@ -16,6 +16,13 @@ import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+# Windows 中文控制台默认 GBK，无法编码 ⚠ 等 Unicode 符号，统一转 UTF-8 输出避免崩溃
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8")
+    except (AttributeError, ValueError):
+        pass
+
 
 # ── PNG DPI 解析 ──────────────────────────────────────────────
 
@@ -85,7 +92,20 @@ def audit_figure_directory(figures_dir: str, strict: bool = False) -> dict:
     """
     p = Path(figures_dir)
     if not p.is_dir():
-        return {"ok": False, "issues": [f"目录不存在: {figures_dir}"]}
+        return {
+            "ok": False,
+            "directory": str(p.resolve()),
+            "png_count": 0,
+            "svg_count": 0,
+            "jpeg_count": 0,
+            "unmatched_png": [],
+            "unmatched_svg": [],
+            "low_dpi": [],
+            "categories": {"raw": 0, "process": 0, "result": 0, "other": 0},
+            "category_files": {"raw": [], "process": [], "result": [], "other": []},
+            "issues": [f"目录不存在: {figures_dir}"],
+            "warnings": [],
+        }
 
     png_files = sorted(p.glob("*.png"))
     svg_files = sorted(p.glob("*.svg"))
