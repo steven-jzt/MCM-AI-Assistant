@@ -1,4 +1,4 @@
-# MCM-AI-Assistant v1.6.0
+# MCM-AI-Assistant v1.8.0
 
 数学建模竞赛 AI 全流程智能体 — 从审题到论文，一条龙辅助。
 
@@ -52,7 +52,7 @@ claude  # 对 AI 说："开始按 SKILL.md 流程处理这道赛题"
 ├── SKILL.md                      ← ★ 技能入口（10条强制约束 + 三角色路由 + 渐进加载 + 质量门 + 竞争/回退机制 + 模型速查）
 ├── CLAUDE.md                     ← 薄指针（指向 SKILL.md + 安装说明）
 ├── README.md                     ← 本文件
-├── VERSION                       ← 版本号（1.6.0）
+├── VERSION                       ← 版本号（1.8.0）
 ├── CHANGELOG.md                  ← 完整版本记录
 ├── requirements.txt              ← Python 依赖
 ├── check_env.py                  ← 环境检查（按 feature 动态验证）
@@ -68,7 +68,8 @@ claude  # 对 AI 说："开始按 SKILL.md 流程处理这道赛题"
 │
 ├── utils/                        ← 工具模块
 │   ├── data_loader.py            ← 多格式数据读取（CSV/Excel/MATLAB/JSON/TXT）
-│   └── visual.py v1.1.0          ← 出版级图表（色盲调色板、PNG+SVG 双格式）
+│   ├── visual.py                 ← 出版级数据图（22 图型 + 命名样式 + 色盲调色板）
+│   └── diagram.py                ← 框架图（技术路线图/流程图/模型结构图，5 版式）
 │
 ├── prompts/legacy/               ← 旧版扁平提示词（v1.0.0，已废弃保留兼容）
 │
@@ -80,7 +81,7 @@ claude  # 对 AI 说："开始按 SKILL.md 流程处理这道赛题"
 │   └── roles/                    ← ★ 三角色工作流（SKILL.md + references/ + scripts/）
 │       ├── 建模手/               ← SKILL.md + 工作流程 + 常见模式 + 质检清单
 │       ├── 编程手/               ← SKILL.md + 可视化规范 + 图表选择与避坑 + scripts/
-│       │   └── scripts/          ← figure_audit / plot_style / repro_manifest
+│       │   └── scripts/          ← figure_audit / plot_style / render_template / repro_manifest
 │       └── 论文手/               ← SKILL.md + 章节模板 + 写作规范 + 英文化工作流 + scripts/
 │           └── scripts/          ← paper_audit（W2 自动审计）
 │
@@ -128,6 +129,7 @@ claude  # 对 AI 说："开始按 SKILL.md 流程处理这道赛题"
 |------|------|------|
 | 环境检查 | `python check_env.py --features data,optimization` | 按需验证依赖 |
 | 图表审计 | `python references/roles/编程手/scripts/figure_audit.py figures/` | 检查 DPI/格式/数量 |
+| 一键出图 | `python references/roles/编程手/scripts/render_template.py taylor` | 渲染模板（PNG+SVG+PDF） |
 | 论文审计 | `python references/roles/论文手/scripts/paper_audit.py template/paper.tex --compile` | 图表引用/章节/数值交叉/编译 |
 | 复现清单 | `python references/roles/编程手/scripts/repro_manifest.py --seed 42 --inputs data/` | 生成 SHA-256 快照 |
 | LaTeX 管线 | `python tools/latex/scripts/latex_paper.py doctor` | 检查/初始化/编译/校验 |
@@ -139,8 +141,12 @@ claude  # 对 AI 说："开始按 SKILL.md 流程处理这道赛题"
 
 - 色盲友好调色板（Wang / Tol Bright / Tol Muted / IBM），禁用彩虹色阶
 - 出版级样式（白底、无网格、无上/右脊线、7.5pt 字体）
-- PNG（≥300 DPI）+ SVG 双格式导出，灰阶预览自检
+- 命名样式预设：`apply_publication_style("nature"|"science"|"ieee"|"plain")`
+- PNG（≥300 DPI）+ SVG 双格式导出，灰阶预览自检；渲染器可追加 PDF
 - 三类图体系：`raw_`（原始数据）/ `process_`（处理过程）/ `result_`（最终结果），每类 ≥3 张
+- 高级图型：收敛图 / 泰勒图 / ROC / 龙卷风 / 云雨图 / 聚类散点 / 树状图等（`utils/visual.py`）
+- 框架图：技术路线图 / 研究框架图 / 流程图 / 问题分析图等（`utils/diagram.py`，5 版式）
+- 一键出图：`python references/roles/编程手/scripts/render_template.py --list`
 - 详见 `references/roles/编程手/references/可视化规范.md`
 
 ## 论文格式要点
@@ -193,5 +199,7 @@ claude  # 对 AI 说："开始按 SKILL.md 流程处理这道赛题"
 | v1.4.0 | 2026-08-07 | W2 自动审计层（paper_audit）+ 方法选择决策树（三层体系+双向索引） |
 | v1.5.0 | 2026-08-09 | 竞争机制（候选池→P1淘汰）+ 回退机制（两级）+ 模板冲突规则（约束#7） |
 | v1.6.0 | 2026-08-14 | 原生化适配当前 Claude Code：CLAUDE.md→SKILL.md 技能入口 + 5 原生质量门 Subagent + SKILL_ROOT/PROJECT_ROOT 契约 + 目录重构 |
+| v1.7.0 | 2026-09-10 | 可视化升级：10 个高级图型（收敛/泰勒/ROC/龙卷风/云雨等）+ 命名样式预设 + 一键出图渲染器 |
+| v1.8.0 | 2026-09-10 | 框架图模块：技术路线图/流程图/模型结构图（5 版式）+ 框架图规范 + 渲染器扩展 |
 
 详见 [CHANGELOG.md](CHANGELOG.md)。

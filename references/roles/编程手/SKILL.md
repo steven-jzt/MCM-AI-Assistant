@@ -14,8 +14,9 @@ description: 数学建模第二阶段——实现模型、跑数据、画图、�
 1. 可运行代码（Python 3），入口 `code/main.py`，一键复现全部结果
 2. 结果表格（CSV 优先；题目要求 XLSX 时才用 XLSX）
 3. **P1 竞争对比表**（候选模型指标对比 + 淘汰决策）
-4. 三类图（`raw_`/`process_`/`result_`），每类 ≥3 张，覆盖全部子问题，共 ≥9 张
-5. `results/复现清单.json`
+4. 三类数据图（`raw_`/`process_`/`result_`），每类 ≥3 张，覆盖全部子问题，共 ≥9 张
+5. 框架图（至少 1 张 `fig_roadmap` 技术路线图；按需 `fig_flow_*` / `fig_pipeline` / `fig_model`）
+6. `results/复现清单.json`
 
 ## 执行顺序
 1. **环境检查**：`python check_env.py --features <所需功能>`
@@ -30,8 +31,10 @@ description: 数学建模第二阶段——实现模型、跑数据、画图、�
 5. **可视化**（P1 之后执行数据剖析）：
    - 每图先写"一图一句结论"（figure contract）
    - raw_ 图须标注被筛选剔除的数据区域及理由
-   - 调用 `utils/visual.py` 或直接使用 matplotlib，应用出版级样式
+   - 调用 `utils/visual.py` 或直接使用 matplotlib，应用出版级样式（`apply_publication_style("nature")`，可选 `science`/`ieee`/`plain`）
+   - 可先 `python references/roles/编程手/scripts/render_template.py --list` 查看现成模板（收敛/泰勒/ROC/云雨等）
    - 保存 PNG（≥300 DPI）+ SVG 双格式
+   - 框架图（技术路线图/流程图/模型结构图）用 `utils/diagram.py` 或 `render_template.py diagram_*`，详见 `references/roles/编程手/references/框架图规范.md`
    - 运行 `python references/roles/编程手/scripts/figure_audit.py figures/`
 6. **生成复现清单**：`python references/roles/编程手/scripts/repro_manifest.py`
 7. **P2 质量门**：派发只读 Subagent 核验代码、图、表、复现清单。
@@ -63,6 +66,7 @@ description: 数学建模第二阶段——实现模型、跑数据、画图、�
 |------|---------|
 | 开局 | 本文档 + `references/roles/编程手/references/工作流程.md` |
 | 绘图前 | `references/roles/编程手/references/可视化规范.md` |
+| 画框架图 | `references/roles/编程手/references/框架图规范.md` |
 | 选图表类型 | `references/roles/编程手/references/图表选择与避坑.md` |
 | 代码参考 | `references/roles/编程手/references/常见模式.md` |
 | 自检 | `references/roles/编程手/references/质检清单.md` |

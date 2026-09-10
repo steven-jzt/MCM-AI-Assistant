@@ -2,7 +2,7 @@
 """
 出版级绘图样式模块 — plot_style.py
 =====================================
-提供 apply_publication_style() 的独立脚本版本，
+出版级命名样式入口（委托 utils.visual.apply_publication_style，单一数据源），
 可直接在代码中调用或作为命令行工具运行。
 
 用法（Python）：
@@ -14,9 +14,20 @@
     python plot_style.py --check    # 检查样式是否可正确设置
 """
 
+import os
+import sys
+
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+
+# 单一数据源：样式预设统一来自 utils.visual，避免两处漂移
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_PROJECT_ROOT = os.path.abspath(os.path.join(_HERE, "..", "..", "..", ".."))
+if _PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, _PROJECT_ROOT)
+
+from utils import visual
 
 # ── 色盲友好调色板 ────────────────────────────────────────────
 
@@ -52,47 +63,38 @@ def get_palette(n_colors: int = 4) -> list:
     return (COLOR_SEQUENCE * (n_colors // len(COLOR_SEQUENCE) + 1))[:n_colors]
 
 
-def apply_style():
-    """设置出版级 matplotlib 全局参数。
+def apply_style(style: str = "nature"):
+    """设置出版级 matplotlib 全局参数（委托 utils.visual，单一数据源）。
 
-    特性：
-    - 白底，无上/右坐标轴脊线
-    - 无网格
-    - 7.5pt 字号
-    - 300 DPI
-    - SVG 文字导出为路径（保证字体可移植）
+    预设：nature（默认）/ science / ieee / plain，见 list_styles()。
     """
-    plt.rcParams.update({
-        "font.size": 7.5,
-        "axes.labelsize": 8,
-        "axes.titlesize": 9,
-        "xtick.labelsize": 7,
-        "ytick.labelsize": 7,
-        "legend.fontsize": 7,
-        "figure.dpi": 300,
-        "savefig.dpi": 300,
-        "savefig.bbox": "tight",
-        "savefig.pad_inches": 0.05,
-        "svg.fonttype": "none",
-        "pdf.fonttype": 42,
-        "axes.spines.top": False,
-        "axes.spines.right": False,
-        "axes.grid": False,
-        "figure.facecolor": "white",
-        "axes.facecolor": "white",
-    })
+    visual.apply_publication_style(style)
+
+
+def list_styles() -> list:
+    """返回全部可用命名样式名。"""
+    return visual.list_styles()
 
 
 if __name__ == "__main__":
     import sys
+    # Windows 中文控制台默认 GBK，统一转 UTF-8 输出避免崩溃
+    for _stream in (sys.stdout, sys.stderr):
+        try:
+            _stream.reconfigure(encoding="utf-8")
+        except (AttributeError, ValueError):
+            pass
+
     if "--check" in sys.argv:
         try:
-            apply_style()
-            # 验证几个关键参数
+            # 遍历全部命名预设，确保都能正确应用
+            for s in list_styles():
+                apply_style(s)
             assert not plt.rcParams["axes.spines.top"], "spines.top 应为 False"
             assert not plt.rcParams["axes.spines.right"], "spines.right 应为 False"
             assert plt.rcParams["savefig.dpi"] == 300, "DPI 应为 300"
             print("PASS — 出版级样式设置成功")
+            print(f"  预设: {list_styles()}")
             print(f"  调色板: {len(COLOR_SEQUENCE)} 种颜色")
             print(f"  图宽预设: {WIDTHS_IN}")
         except Exception as e:
@@ -100,6 +102,9 @@ if __name__ == "__main__":
             sys.exit(1)
     else:
         apply_style()
-        print("出版级样式已应用。可用调色板颜色：")
+        print("出版级样式已应用。可用预设：")
+        for s in list_styles():
+            print(f"  - {s}")
+        print("可用调色板颜色：")
         for name, color in PALETTE.items():
             print(f"  {name:12s} {color}")

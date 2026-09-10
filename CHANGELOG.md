@@ -4,6 +4,45 @@
 
 ---
 
+## [v1.8.0] — 2026-09-10
+
+### 新增 — 框架图模块（非数据型图示）
+
+- **`utils/diagram.py`**：纯 matplotlib 渲染框架图（技术路线图/流程图/模型结构图等），复用 `utils.visual` 的样式/调色板/三格式导出，零新依赖。
+  - 5 个版式模板：`diagram_roadmap`（五带技术路线图）、`diagram_framework`（三栏研究框架图）、`diagram_stageflow`（三栏阶段流程图）、`diagram_taskflow`（横版任务流水线）、`diagram_problem_flow`（问题分析流程图）。
+  - dict/JSON 驱动 + 中文断行 + 字宽预算校验（超框报错），PNG(300DPI)+SVG+PDF 三格式。
+- **`框架图规范.md`**：吸纳 mathmodel-diagram / 4drawio 的图类型清单、文件命名、语义约定、字数预算、连接器规范、A/B/C 题图库、自检清单。
+- **渲染器扩展**：`render_template.py` 新增 5 个 `diagram_*` 模板（现共 26 个），一键出框架图。
+
+### 改进
+
+- `编程手/SKILL.md` 固定交付物新增「框架图」（至少 1 张技术路线图），可视化步骤与「何时加载」表补框架图入口。
+
+---
+
+## [v1.7.0] — 2026-09-10
+
+### 新增 — 可视化能力升级（借鉴 mathmodel-kit / SciencePlots）
+
+- **高级图表函数**（`utils/visual.py`，累计 22 个图型）：新增 10 个高级图型，直接对接 `model_library` 输出——
+  - 迭代收敛曲线 `convergence_chart`（对接遗传算法/模拟退火 `history`）
+  - 预测 vs 实际 `prediction_vs_actual`（R²/RMSE 内联计算）
+  - 残差诊断面板 `residual_panel`（残差-拟合值 + 残差分布）
+  - 灵敏度龙卷风图 `tornado_chart`（关键参数敏感性扫描）
+  - 泰勒图 `taylor_diagram`（多模型 R / 标准差 / RMS 三统计量比较）
+  - ROC 曲线 `roc_curve`（AUC，可选 K 折交叉验证）
+  - 云雨图 `raincloud`、聚类散点 `cluster_scatter`、层次聚类树状图 `dendrogram`、肘部法则 `elbow_curve`
+- **命名样式预设**：`apply_publication_style(style=...)` 支持 nature（默认）/ science / ieee / plain，新增 `list_styles()`；零新依赖（不引入 scienceplots / pyecharts）。
+- **一键出图渲染器** `references/roles/编程手/scripts/render_template.py`：21 个模板 id，一条命令产出 PNG(300DPI)+SVG+PDF 三格式，`--list` / `--all` / 单 id 三种入口。
+
+### 改进
+
+- `utils/visual.py` 新增 `SAVE_FORMATS` 常量，`_save_figure` 支持按需追加 PDF 导出。
+- `plot_style.py` 样式预设改为委托 `utils.visual`，消除双处漂移（单一数据源）。
+- 文档同步：可视化规范新增「图型模板库与一键渲染」小节；图表选择速查表补充泰勒图 / ROC / 云雨图等。
+
+---
+
 ## [v1.6.0] — 2026-08-14
 
 ### 新增 — 原生化适配当前 Claude Code
